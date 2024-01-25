@@ -1,23 +1,33 @@
-def getFile(name)
+# Read file and return at an array of lines
+def getFileLines(name)
     fileObj = File.open(name)
-    fileObj.read()
+    text = fileObj.read()
+    text.split("/n")
 end
 
-def wordCountTable(filename)
-    text = getFile(filename)
-    words = text.split(" ")
+# Display all the line in an array of text strings
+def displayLines(lines)
+    lines.each do |l|
+      print l,"\n"
+    end
+end
+
+# Create a table of words
+def createWordCountTable(lines)
     table = {}
-    words.each do |w|
-        # Remove punctuation, make lower case
-        w=w.gsub(/\W/, ' ').downcase  
-        # either make new entry, or increment entry
-        if table.key?(w)
-            table[w] = table[w]+1
-        else 
-            table[w] = 1
+    lines.each do |l|
+        line = l.split(" ")
+        line.each do |w|
+            # Remove punctuation, make lower case
+            w=w.gsub(/\W/, ' ').downcase  
+            # either make new entry, or increment entry
+            if table.key?(w)
+                table[w] = table[w]+1
+            else 
+                table[w] = 1
+            end
         end
     end
-    print table.class,"\n"
     table
  end
 
@@ -36,7 +46,6 @@ def displayTableCount(table)
 end
 
 def lookupWords(table)
-    print table.class,"\n"
     while true
         print "word to lookup:"
         w = gets.chomp
@@ -51,8 +60,9 @@ def lookupWords(table)
     end 
 end  
 
-table=wordCountTable("emilydickenson.txt")
+lines=getFileLines("emilydickenson.txt")
+table=createWordCountTable(lines)
 print "total uniqu words:",table.length,"\n"
-displayTableCount(table)
+
 lookupWords(table)
 
